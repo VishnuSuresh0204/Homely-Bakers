@@ -377,6 +377,17 @@ def addFeedback(request):
         messages.warning(request, "You have already provided feedback for this order.")
         return redirect('/viewbooking')
 
+    # Check if delivery time has passed
+    from datetime import datetime
+    now = datetime.now()
+    try:
+        d_time = datetime.strptime(booking.deltime, '%Y-%m-%dT%H:%M')
+        if now < d_time:
+            messages.warning(request, "Feedback can only be provided after the delivery time.")
+            return redirect('/viewbooking')
+    except (ValueError, TypeError):
+        pass
+
     if request.POST:
         rating = request.POST['rating']  
         message1 = request.POST['msg']  
