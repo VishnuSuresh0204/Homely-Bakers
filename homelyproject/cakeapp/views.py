@@ -410,7 +410,7 @@ def editFeedback(request):
         messages.success(request, 'Feedback updated successfully')
         return redirect('/viewbooking')
         
-    return render(request, "USER/addFeedback.html", {'feedback': feedback})
+    return render(request, "USER/addFeedback.html", {'feedback': feedback, 'booking': feedback.bookingid})
 
 def deleteFeedback(request):
     fid = request.GET.get('id')
