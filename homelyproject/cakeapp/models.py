@@ -39,9 +39,6 @@ class CakeDetails(models.Model):
     CakeFlavor=models.CharField(max_length=200)
     CakeIngredients=models.CharField(max_length=500)
     CustomizableOptions=models.CharField(max_length=500)
-    PreparationTime=models.CharField(max_length=500)
-    SpecialNotes=models.CharField(max_length=500)
-    Discount=models.CharField(max_length=500)
     StockQuantity=models.CharField(max_length=500)
     EarliestDelivery=models.CharField(max_length=40,default='Today')
     cstatus=models.CharField(max_length=40,default='Available')
@@ -55,6 +52,8 @@ class Booking(models.Model):
     status=models.CharField(max_length=20,default='pending')
     date=models.DateField(auto_now_add=True)
     deltime=models.CharField(max_length=500)
+    weight=models.CharField(max_length=100,null=True)
+    customization=models.CharField(max_length=500,null=True)
     
 class Feedback(models.Model):
     uid=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
@@ -63,5 +62,6 @@ class Feedback(models.Model):
     Rating=models.CharField(max_length=200,null=True)
     date=models.DateTimeField(auto_now_add=True,null=True)
     fstatus=models.CharField(max_length=20,default='pending')
+    bookingid=models.ForeignKey(Booking,on_delete=models.CASCADE,null=True)
     
     

@@ -13,6 +13,9 @@ def login(request):
         Password=request.POST['pass']
         user=authenticate(username=Email,password=Password)
         if user is not None:
+            if not user.is_active:
+                messages.info(request, "Your account is blocked. Please contact admin.")
+                return redirect("/login")
             if user.usertype=="admin":
                 messages.info(request,"Welcome To The Admin Page")
                 return redirect("/adminHome")
@@ -110,6 +113,30 @@ def DeleteBaker(request):
     messages.info(request,"Deleted Successfully")
     return redirect("/viewBakers")
 
+def BlockUser(request):
+    id=request.GET['id']
+    status=request.GET['status']
+    log=Login.objects.get(id=id)
+    log.is_active=int(status)
+    log.save()
+    if status == '1':
+        messages.info(request,"User Unblocked Successfully")
+    else:
+        messages.info(request,"User Blocked Successfully")
+    return redirect("/viewUsers")
+
+def BlockBaker(request):
+    id=request.GET['id']
+    status=request.GET['status']
+    log=Login.objects.get(id=id)
+    log.is_active=int(status)
+    log.save()
+    if status == '1':
+        messages.info(request,"Baker Unblocked Successfully")
+    else:
+        messages.info(request,"Baker Blocked Successfully")
+    return redirect("/viewBakers")
+
 
 ## ==============================   BAKER   ================================
 
@@ -125,20 +152,22 @@ def addCake(request):
         cake_image = request.FILES['CakeImage']
         cake_category = request.POST['CakeCategory']
         cake_price = request.POST['CakePrice']
-        cake_weight = request.POST['CakeWeight']
+        cake_weights = request.POST.getlist('CakeWeight[]')
+        custom_weight = request.POST.get('CustomCakeWeight', '')
+        if 'Custom' in cake_weights and custom_weight:
+            cake_weights = [w for w in cake_weights if w != 'Custom']
+            cake_weights.append(custom_weight)
+        cake_weight = ', '.join(cake_weights)
         cake_flavor = request.POST['CakeFlavor']
         cake_ingredients = request.POST['CakeIngredients']
         customizable_options = ', '.join(request.POST.getlist('CustomizableOptions[]')) 
-        preparation_time = request.POST['PreparationTime']
-        special_notes = request.POST['SpecialNotes']
-        discount = request.POST['Discount'] 
         stock_quantity = request.POST['StockQuantity']
         earliest_delivery = request.POST['EarliestDelivery']
         cake=CakeDetails.objects.create(CakeName=cake_name,CakeDescri=cake_descri,
             CakeImage=cake_image,CakeCategory=cake_category,CakePrice=cake_price,
             CakeWeight=cake_weight,CakeFlavor=cake_flavor,CakeIngredients=cake_ingredients,
-            CustomizableOptions=customizable_options,PreparationTime=preparation_time,SpecialNotes=special_notes,
-            Discount=discount,StockQuantity=stock_quantity,EarliestDelivery=earliest_delivery,bakerid=baker)
+            CustomizableOptions=customizable_options,
+            StockQuantity=stock_quantity,EarliestDelivery=earliest_delivery,bakerid=baker)
         cake.save()
         messages.info(request,"Cake Added Successfully")
         return redirect('/viewCakes')
@@ -157,12 +186,14 @@ def updateCake(request):
         cake_descri = request.POST.get('CakeDescri')
         cake_category = request.POST.get('CakeCategory')
         cake_price = request.POST.get('CakePrice')
-        cake_weight = request.POST.get('CakeWeight')
+        cake_weights = request.POST.getlist('CakeWeight[]')
+        custom_weight = request.POST.get('CustomCakeWeight', '')
+        if 'Custom' in cake_weights and custom_weight:
+            cake_weights = [w for w in cake_weights if w != 'Custom']
+            cake_weights.append(custom_weight)
+        cake_weight = ', '.join(cake_weights)
         cake_flavor = request.POST.get('CakeFlavor')
         cake_ingredients = request.POST.get('CakeIngredients')
-        preparation_time = request.POST.get('PreparationTime')
-        special_notes = request.POST.get('SpecialNotes', '')
-        discount = request.POST.get('Discount', '')
         stock_quantity = request.POST.get('StockQuantity')
         customizable_options_toggle = request.POST.get('CustomizableOptionsToggle')
         if customizable_options_toggle == 'Yes':
@@ -179,9 +210,6 @@ def updateCake(request):
         cake.CakeWeight = cake_weight
         cake.CakeFlavor = cake_flavor
         cake.CakeIngredients = cake_ingredients
-        cake.PreparationTime = preparation_time
-        cake.SpecialNotes = special_notes
-        cake.Discount = discount
         cake.StockQuantity = stock_quantity
         cake.CustomizableOptions = customizable_options_str
         if cake_image:  
@@ -229,17 +257,34 @@ def cakeDetail(request):
         qty=request.POST.get("quantity")
         desc=request.POST.get("desc")
         deltime=request.POST.get("deltime")
-        id=request.POST.get("id")
-        cid=CakeDetails.objects.get(id=id)
-        pri=CakeDetails.objects.filter(id=id)
-        amt=pri[0].CakePrice
-        print(type(amt))
-        total=amt*int(qty)
-        print(total)
-        uid=User.objects.get(id=id)
-        obj=Booking.objects.create(cakeid=cid, uid=uid,qty=qty,total=total,desc=desc,deltime=deltime)
+        cake_id=request.POST.get("id")
+        selected_weight = request.POST.get("selected_weight")
+        selected_customizations = request.POST.getlist("selected_customizations[]")
+        customization_str = ", ".join(selected_customizations) if selected_customizations else "None"
+        
+        cid=CakeDetails.objects.get(id=cake_id)
+        amt=float(cid.CakePrice)
+        
+        # Extract numeric weight (e.g., "0.5" from "0.5 kg")
+        import re
+        weight_match = re.search(r"(\d+\.?\d*)", selected_weight)
+        weight_value = float(weight_match.group(1)) if weight_match else 1.0
+        
+        # Unit conversion: if grams, divide by 1000 to get kg equivalent
+        weight_unit = selected_weight.lower()
+        if 'kg' not in weight_unit and ('g' in weight_unit or 'gm' in weight_unit):
+            weight_value = weight_value / 1000.0
+            
+        total = amt * weight_value * int(qty)
+        
+        log_id = request.session['uid']
+        user = User.objects.get(logid=log_id)
+        
+        obj=Booking.objects.create(cakeid=cid, uid=user, qty=qty, total=str(total), desc=desc, deltime=deltime, weight=selected_weight, customization=customization_str)
         obj.save()
         messages.info(request, "Booking Successfully")
+        return redirect('/viewbooking')
+
     return render(request, "USER/CakeDetail.html", {
         'detail': [cake],
         'weight_options': weight_options,
@@ -250,7 +295,20 @@ def cakeDetail(request):
 def viewbooking(request):
     uid=request.session['uid']
     user=User.objects.get(logid=uid)
-    data=Booking.objects.filter(uid=user)
+    data=Booking.objects.filter(uid=user).order_by('-id')
+    
+    from datetime import datetime
+    import pytz
+    now = datetime.now()
+    
+    for i in data:
+        try:
+            # Parse '2026-03-02T15:28' format from datetime-local input
+            d_time = datetime.strptime(i.deltime, '%Y-%m-%dT%H:%M')
+            i.is_delivered = now > d_time
+        except (ValueError, TypeError):
+            i.is_delivered = False
+            
     return render(request,"USER/viewBooking.html",{"data":data})
 
 def viewfeedback(request):
@@ -309,16 +367,45 @@ def addPayment(request):
 
 def addFeedback(request):
     uid = request.session['uid']
-    id= request.GET.get("id")  
+    booking_id = request.GET.get("id")  
     user = User.objects.get(logid=uid)
-    cake = CakeDetails.objects.get(id=uid)  
+    booking = Booking.objects.get(id=booking_id)
+    cake = booking.cakeid
+
+    # Check if feedback already exists for this booking
+    if Feedback.objects.filter(bookingid=booking).exists():
+        messages.warning(request, "You have already provided feedback for this order.")
+        return redirect('/viewbooking')
+
     if request.POST:
-        rating=request.POST['rating']  
-        message1=request.POST['msg']  
-        data=Feedback.objects.create(Message=message1,uid=user,cakeid=cake,Rating=rating)
-        data.save()
-        messages.success(request, 'Payment successfully')
-    return render(request,"USER/addFeedback.html")
+        rating = request.POST['rating']  
+        message1 = request.POST['msg']  
+        Feedback.objects.create(Message=message1, uid=user, cakeid=cake, Rating=rating, bookingid=booking)
+        messages.success(request, 'Feedback submitted successfully')
+        return redirect('/viewbooking')
+        
+    return render(request, "USER/addFeedback.html", {'booking': booking})
+
+def editFeedback(request):
+    fid = request.GET.get('id')
+    feedback = Feedback.objects.get(id=fid)
+    
+    if request.POST:
+        rating = request.POST['rating']
+        message1 = request.POST['msg']
+        feedback.Rating = rating
+        feedback.Message = message1
+        feedback.save()
+        messages.success(request, 'Feedback updated successfully')
+        return redirect('/viewbooking')
+        
+    return render(request, "USER/addFeedback.html", {'feedback': feedback})
+
+def deleteFeedback(request):
+    fid = request.GET.get('id')
+    Feedback.objects.filter(id=fid).delete()
+    messages.success(request, 'Feedback deleted successfully')
+    return redirect('/viewbooking')
 
 
 

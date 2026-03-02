@@ -38,6 +38,8 @@
                             <th style="padding: 10px; border: 1px solid #ddd;">Price</th>
                             <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
                             <th style="padding: 10px; border: 1px solid #ddd;">Message</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Weight</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Customizations</th>
                             <th style="padding: 10px; border: 1px solid #ddd;">Delivery date&time</th>
                             <th style="padding: 10px; border: 1px solid #ddd;" colspan="2">Action</th>
                         </tr>
@@ -58,6 +60,8 @@
                             <td style="padding: 10px; border: 1px solid #ddd;">₹{{i.cakeid.CakePrice}}</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">{{i.total}}</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">{{i.desc}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.weight}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.customization}}</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">{{i.deltime}}</td>
 
                             {% if i.status == 'pending' %}

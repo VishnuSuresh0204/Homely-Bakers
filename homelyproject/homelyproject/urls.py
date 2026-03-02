@@ -35,6 +35,8 @@ urlpatterns = [
     path("DeleteBaker/", views.DeleteBaker),
     path("viewBookings/", views.viewBookings),
     path("viewFeedbacks/", views.viewFeedbacks),
+    path("BlockUser/", views.BlockUser),
+    path("BlockBaker/", views.BlockBaker),
     
     # ================ BAKER =================
     
@@ -57,5 +59,7 @@ urlpatterns = [
     path("viewbooking/", views.viewbooking),
     path("addPayment/", views.addPayment),
     path("addFeedback/", views.addFeedback),
+    path("editFeedback/", views.editFeedback),
+    path("deleteFeedback/", views.deleteFeedback),
     path("viewfeedback/", views.viewfeedback),
 ]

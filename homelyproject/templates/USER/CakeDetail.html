@@ -58,36 +58,10 @@
                                     <ul class="product-meta">
                                         <li><strong>Category:</strong> {{ i.CakeCategory }}</li>
                                         <li><strong>Stock:</strong> {{ i.StockQuantity }}no.s</li><br>
-                                        <li><strong>Weight:</strong> 
-                                            {% for weight in weight_options %}
-                                                <label style="margin-right: 10px;">
-                                                    <!-- <input type="checkbox" name="CakeWeight[]" value="{{ weight }}" checked>  -->
-                                                    <i class="fa fa-balance-scale" style="color: #f07495;"></i> {{ weight }}
-                                                </label>
-                                            {% endfor %}
-                                        </li><br>
                                         <li><strong>Flavor:</strong> {{ i.CakeFlavor }}</li>
                                         <li><strong>Ingredients:</strong> {{ i.CakeIngredients }}</li>
-                                        <li><strong>Preparation Time:</strong> {{ i.PreparationTime }}</li>
                                         <li><strong>Earliest Delivery:</strong> {{ i.EarliestDelivery }}</li>
 
-                                        <!-- Hide Special Notes if empty -->
-                                        {% if i.SpecialNotes %}
-                                        <li><strong>Special Notes:</strong> {{ i.SpecialNotes }}</li>
-                                        {% endif %}
-
-                                        <!-- Customizable Options -->
-                                        {% if customizable_options %}
-                                        <li><strong>Customizable Options:</strong>
-                                            <ul>
-                                                {% for option in customizable_options %}
-                                                    <li>✅ {{ option }}</li>
-                                                {% endfor %}
-                                            </ul>
-                                        </li><br><br>
-                                        {% else %}
-                                        <li><strong>Customizable Options:</strong> Not customizable</li>
-                                        {% endif %}
                                     </ul>
                                     <style>
                                         .booking-form {
@@ -161,13 +135,37 @@
                                         <input type="hidden" name="id" value="{{ i.id }}">
                                     
                                         <div class="form-group">
+                                            <label>Select Weight *</label>
+                                            <div class="weight-options">
+                                                {% for weight in weight_options %}
+                                                <label style="margin-right: 15px; font-weight: normal;">
+                                                    <input type="radio" name="selected_weight" value="{{ weight }}" required> {{ weight }}
+                                                </label>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+
+                                        {% if customizable_options %}
+                                        <div class="form-group">
+                                            <label>Customizations</label>
+                                            <div class="customization-options">
+                                                {% for option in customizable_options %}
+                                                <label style="display: block; font-weight: normal;">
+                                                    <input type="checkbox" name="selected_customizations[]" value="{{ option }}"> {{ option }}
+                                                </label>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% endif %}
+
+                                        <div class="form-group">
                                             <label for="desc">Description</label>
                                             <textarea id="desc" name="desc" placeholder="Enter Description" class="form-control"></textarea>
                                         </div>
                                     
                                         <div class="form-group">
                                             <label for="deltime">Delivery Time</label>
-                                            <input type="datetime-local" id="deltime" name="deltime" class="form-control">
+                                            <input type="datetime-local" id="deltime" name="deltime" class="form-control" required>
                                         </div>
                                     
                                         <button type="submit" class="btn btn-success">Book Now</button>
@@ -186,5 +184,41 @@
     </div>
 </div>
 <!-- End Sidebar Page Container -->
+
+
+<script>
+    const basePrice = parseFloat("{{ i.CakePrice }}");
+    const qtyInput = document.getElementById('quantity');
+    const priceDisplay = document.querySelector('.item-price');
+    const weightRadios = document.querySelectorAll('input[name="selected_weight"]');
+
+    function updatePrice() {
+        let selectedWeight = 1.0;
+        weightRadios.forEach(radio => {
+            if (radio.checked) {
+                const weightStr = radio.value.toLowerCase();
+                const match = weightStr.match(/(\d+\.?\d*)/);
+                if (match) {
+                    let weight = parseFloat(match[0]);
+                    // If unit is grams, convert to kg for price calculation
+                    if (!weightStr.includes('kg') && (weightStr.includes('g') || weightStr.includes('gm'))) {
+                        weight = weight / 1000.0;
+                    }
+                    selectedWeight = weight;
+                }
+            }
+        });
+
+        const quantity = parseInt(qtyInput.value) || 1;
+        const totalPrice = basePrice * selectedWeight * quantity;
+        priceDisplay.innerText = '₹' + totalPrice.toFixed(2);
+    }
+
+    qtyInput.addEventListener('input', updatePrice);
+    weightRadios.forEach(radio => radio.addEventListener('change', updatePrice));
+    
+    // Initial call to set price correctly if a radio is pre-selected (though usually none are)
+    updatePrice();
+</script>
 
 {% endblock %}

@@ -34,6 +34,8 @@
                             <th style="padding: 10px; border: 1px solid #ddd;">Cake Name</th>
                             <th style="padding: 10px; border: 1px solid #ddd;">Image</th>
                             <th style="padding: 10px; border: 1px solid #ddd;">Message</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Weight</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Customizations</th>
                             <th style="padding: 10px; border: 1px solid #ddd;">Rating</th>
                         </tr>
                     </thead>
@@ -49,6 +51,8 @@
                                 </a>
                             </td>                            
                             <td style="padding: 10px; border: 1px solid #ddd;">{{i.Message}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.bookingid.weight}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.bookingid.customization}}</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">{{i.Rating}}⭐</td>
                         </tr>
                         {% endfor %}
