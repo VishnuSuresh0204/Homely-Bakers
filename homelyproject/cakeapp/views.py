@@ -195,6 +195,7 @@ def updateCake(request):
         cake_flavor = request.POST.get('CakeFlavor')
         cake_ingredients = request.POST.get('CakeIngredients')
         stock_quantity = request.POST.get('StockQuantity')
+        earliest_delivery = request.POST.get('EarliestDelivery')
         customizable_options_toggle = request.POST.get('CustomizableOptionsToggle')
         if customizable_options_toggle == 'Yes':
             customizable_options = request.POST.getlist('CustomizableOptions[]')
@@ -211,6 +212,7 @@ def updateCake(request):
         cake.CakeFlavor = cake_flavor
         cake.CakeIngredients = cake_ingredients
         cake.StockQuantity = stock_quantity
+        cake.EarliestDelivery = earliest_delivery
         cake.CustomizableOptions = customizable_options_str
         if cake_image:  
             cake.CakeImage = cake_image
