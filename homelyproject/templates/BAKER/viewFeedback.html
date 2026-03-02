@@ -1,0 +1,90 @@
+{% extends 'BAKER/bakerCommon.html' %}
+{% load static %}
+{% for m in messages %}
+<script>
+    alert("{{m}}")
+</script>
+{% endfor %}
+{% block content %}
+
+    <!--Page Title-->
+    <section class="page-title" style="background-image:url(/static/images/background/34.jpg)">
+        <div class="auto-container">
+            <h1>View Feedback</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/">home</a></li>
+                <li>View Feedback</li>
+            </ul>
+        </div>
+    </section>
+    <!--End Page Title-->
+
+    <!--Cake Section-->
+    <section class="cake-section">
+        <div class="auto-container">
+            <!-- Cake Table -->
+            <div class="cake-table"><br><br>
+                <h3 style="margin-left: 430px;">View Feedback</h3>
+                <!--Cake Table-->
+                <table style="width: 100%; border: 1px solid #ddd; border-collapse: collapse;margin-left: -80px;">
+                    <thead style="background-color: #f4f4f4;">
+                        <tr>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Username</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Cake Name</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Image</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Message</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data %}
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.uid.Username}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.cakeid.CakeName}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <a href="/static/media/{{i.CakeImage}}" target="_blank">
+                                    <img src="/static/media/{{i.cakeid.CakeImage}}" alt="image" width="200px" style="border-radius: 5px; cursor: zoom-in;">
+                                </a>
+                            </td>                            
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Message}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Rating}}⭐</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <br><br><br><br>
+            </div>
+            <!--End Cake Table -->  
+        </div>
+    </section>
+    <!--End Cake Section-->
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            margin-top: 20px;
+        }
+        th {
+            background-color: #e79b9b;
+            color: #333;
+            font-weight: bold;
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+
+{% endblock %}

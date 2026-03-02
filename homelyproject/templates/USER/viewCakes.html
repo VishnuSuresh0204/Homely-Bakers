@@ -1,0 +1,87 @@
+{% extends 'USER/userCommon.html' %}
+{% load static %}
+{% for m in messages %}
+<script>
+    alert("{{m}}")
+</script>
+{% endfor %}
+{% block content %}
+
+<!--Page Title-->
+<section class="page-title" style="background-image:url(../static/images/background/34.jpg)">
+    <div class="auto-container">
+        <h1>View Cakes</h1>
+        <ul class="page-breadcrumb">
+            <li><a href="/">home</a></li>
+            <li>View Cakes</li>
+        </ul>
+    </div>
+</section>
+<!--End Page Title-->
+
+<!--Sidebar Page Container-->
+<div class="sidebar-page-container">
+    <div class="auto-container">
+        <div class="row clearfix">
+            <!--Content Side-->
+            <div class="content-side col-lg-12 col-md-12 col-sm-12">
+                <!-- Search Widget -->
+                <div class="sidebar-widget search-widget" style="margin-bottom: 20px;">
+                    <form method="post">
+                        <div class="form-group" style="display: flex;">
+                            <input type="search" name="search-field" value="" placeholder="Search cakes…" required 
+                                style="flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                            <button type="submit" 
+                                style="padding: 10px 20px; margin-left: 5px; background-color: #e79b9b; color: white; border: none; border-radius: 5px;">
+                                <span class="icon fa fa-search"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="our-shop">
+                    <div class="row clearfix">
+                        {% for i in data %}
+                        <!-- Shop Item --> 
+                        <div class="shop-item col-lg-4 col-md-6 col-sm-12">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <div class="sale-tag">sale!</div>
+                                    <figure class="image">
+                                        <a href="/cakeDetail?id={{i.id}}">
+                                            <img src="/static/media/{{i.CakeImage}}" alt="Cake Image" style="border-radius: 10px;">
+                                        </a>
+                                    </figure>
+                                    <div class="btn-box">
+                                        <a href="/addToCart?id={{i.id}}">Add to cart</a>
+                                    </div>
+                                </div>
+                                <div class="lower-content">
+                                    <h4 class="name"><a href="/cakeDetail?id={{i.id}}">{{i.CakeName}}</a></h4>
+                                    <div class="rating">
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star light"></span>
+                                    </div>
+                                    <div class="price">
+                                        {% if i.Discount %}
+                                            <del>₹{{i.Discount}}</del>
+                                        {% endif %}
+                                        ₹{{i.CakePrice}}
+                                    </div>
+                                    <div style="margin-top: 10px; text-align: center;">
+                                        <a href="/cakeDetail?id={{i.id}}" class="btn btn-primary" style="padding: 5px 15px; border-radius: 5px;">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Sidebar Page Container-->
+{% endblock %}                                                                  

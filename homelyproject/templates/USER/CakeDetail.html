@@ -1,0 +1,190 @@
+{% extends 'USER/userCommon.html' %}
+{% load static %}
+
+{% for m in messages %}
+<script>
+    alert("{{m}}")
+</script>
+{% endfor %}
+
+{% block content %}
+
+<!-- Page Title -->
+<section class="page-title" style="background-image:url(../static/images/background/34.jpg)">
+    <div class="auto-container">
+        <h1>View Cakes</h1>
+        <ul class="page-breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li>View Cakes</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Sidebar Page Container -->
+<div class="sidebar-page-container">
+    <div class="auto-container">
+        <div class="row clearfix">
+            <!-- Content Side -->
+            <div class="content-side col-lg-9 col-md-12 col-sm-12">
+                <div class="shop-single">
+                    {% for i in detail %}
+                    <!-- Product Detail -->
+                    <div class="product-details">
+                        <!-- Basic Details -->
+                        <div class="basic-details">
+                            <div class="row clearfix">
+                                <div class="image-column col-md-6 col-sm-12">
+                                    <figure class="image">
+                                        <a href="/static/media/{{ i.CakeImage }}" class="lightbox-image">
+                                            <img src="/static/media/{{ i.CakeImage }}" alt="{{ i.CakeName }}" style="width: 100%; border-radius: 10px;">
+                                            <span class="icon fa fa-search"></span>
+                                        </a>
+                                    </figure>
+                                </div>
+                                <div class="info-column col-md-6 col-sm-12">
+                                    <div class="details-header">
+                                        <h4>{{ i.CakeName }}</h4>
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+                                        <div class="item-price">₹{{ i.CakePrice }}</div>
+                                        <p>{{ i.CakeDescri }}</p>
+                                    </div>
+
+                                    <ul class="product-meta">
+                                        <li><strong>Category:</strong> {{ i.CakeCategory }}</li>
+                                        <li><strong>Stock:</strong> {{ i.StockQuantity }}no.s</li><br>
+                                        <li><strong>Weight:</strong> 
+                                            {% for weight in weight_options %}
+                                                <label style="margin-right: 10px;">
+                                                    <!-- <input type="checkbox" name="CakeWeight[]" value="{{ weight }}" checked>  -->
+                                                    <i class="fa fa-balance-scale" style="color: #f07495;"></i> {{ weight }}
+                                                </label>
+                                            {% endfor %}
+                                        </li><br>
+                                        <li><strong>Flavor:</strong> {{ i.CakeFlavor }}</li>
+                                        <li><strong>Ingredients:</strong> {{ i.CakeIngredients }}</li>
+                                        <li><strong>Preparation Time:</strong> {{ i.PreparationTime }}</li>
+                                        <li><strong>Earliest Delivery:</strong> {{ i.EarliestDelivery }}</li>
+
+                                        <!-- Hide Special Notes if empty -->
+                                        {% if i.SpecialNotes %}
+                                        <li><strong>Special Notes:</strong> {{ i.SpecialNotes }}</li>
+                                        {% endif %}
+
+                                        <!-- Customizable Options -->
+                                        {% if customizable_options %}
+                                        <li><strong>Customizable Options:</strong>
+                                            <ul>
+                                                {% for option in customizable_options %}
+                                                    <li>✅ {{ option }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li><br><br>
+                                        {% else %}
+                                        <li><strong>Customizable Options:</strong> Not customizable</li>
+                                        {% endif %}
+                                    </ul>
+                                    <style>
+                                        .booking-form {
+                                            background: #f8f9fa; /* Light grey background */
+                                            padding: 20px;
+                                            border-radius: 8px;
+                                            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                                            max-width: 650px;
+                                            margin: auto;
+                                        }
+                                    
+                                        .booking-form .form-group {
+                                            margin-bottom: 15px;
+                                        }
+                                    
+                                        .booking-form label {
+                                            font-weight: bold;
+                                            color: #333;
+                                        }
+                                    
+                                        .booking-form .form-control {
+                                            width: 100%;
+                                            padding: 10px;
+                                            border-radius: 5px;
+                                            border: 1px solid #bfbbbb;
+                                        }
+                                    
+                                        .booking-form .btn-success {
+                                            width: 100%;
+                                            padding: 10px;
+                                            font-size: 16px;
+                                            font-weight: bold;
+                                            background: #28a745;
+                                            border: none;
+                                            border-radius: 5px;
+                                            transition: background 0.3s;
+                                        }
+                                    
+                                        .booking-form .btn-success:hover {
+                                            background: #218838;
+                                        }
+                                    
+                                        .booking-form .form-control:focus {
+                                            border-color: #28a745;
+                                            box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+                                        }
+                                    
+                                        .booking-form .item-quantity {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 10px;
+                                        }
+                                    
+                                        .booking-form .item-quantity input {
+                                            max-width: 80px;
+                                            text-align: center;
+                                        }
+                                    
+                                    </style>
+                                    
+                                    <form method="post" class="booking-form">
+                                        {% csrf_token %}
+                                        
+                                        <div class="form-group">
+                                            <label for="quantity">Quantity</label>
+                                            <div class="item-quantity">
+                                                <input class="form-control qty" type="number" id="quantity" name="quantity" value="1" min="1">
+                                            </div>
+                                        </div>
+                                    
+                                        <input type="hidden" name="id" value="{{ i.id }}">
+                                    
+                                        <div class="form-group">
+                                            <label for="desc">Description</label>
+                                            <textarea id="desc" name="desc" placeholder="Enter Description" class="form-control"></textarea>
+                                        </div>
+                                    
+                                        <div class="form-group">
+                                            <label for="deltime">Delivery Time</label>
+                                            <input type="datetime-local" id="deltime" name="deltime" class="form-control">
+                                        </div>
+                                    
+                                        <button type="submit" class="btn btn-success">Book Now</button>
+                                    </form>
+                                                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Basic Details -->
+                    </div>
+                    <!-- End Product Detail -->
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Sidebar Page Container -->
+
+{% endblock %}

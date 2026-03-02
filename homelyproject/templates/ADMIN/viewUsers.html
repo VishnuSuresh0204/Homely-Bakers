@@ -1,0 +1,85 @@
+{% extends 'ADMIN/adminCommon.html' %}
+{% load static %}
+{% for m in messages %}
+<script>
+    alert("{{m}}")
+</script>
+{% endfor %}
+{% block content %}
+
+    <!--Page Title-->
+    <section class="page-title" style="background-image:url(/static/images/background/34.jpg)">
+        <div class="auto-container">
+            <h1>View Users</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/">home</a></li>
+                <li>View Users</li>
+            </ul>
+        </div>
+    </section>
+    <!--End Page Title-->
+
+    <!--Login Section-->
+    <section class="login-section">
+        <div class="auto-container">
+            <!-- Login Table -->
+            <div class="login-table">
+                <h3 style="margin-left: 500px;">View Users</h3>
+                <!--Login Table-->
+                <table style="width: 100%; border: 1px solid #ddd; border-collapse: collapse;">
+                    <thead style="background-color: #f4f4f4;">
+                        <tr>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Username</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Image</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Email</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Phonenumber</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data %}
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Username}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><img src="/static/media/{{i.ProfilePicture}}" alt="image" width="100" style="border-radius: 5px;"></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Email}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Phonenumber}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Address}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!--End Login Table -->  
+        </div>
+    </section>
+    <!--End Login Section-->
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            margin-top: 20px;
+        }
+        th {
+            background-color: #e79b9b;
+            color: #333;
+            font-weight: bold;
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+
+{% endblock %}

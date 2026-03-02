@@ -1,0 +1,74 @@
+{% extends 'USER/userCommon.html' %}
+{% load static %}
+{% for m in messages %}
+<script>
+    alert("{{m}}")
+</script>
+{% endfor %}
+{% block content %}
+
+<!--Page Title-->
+<section class="page-title" style="background-image:url(../static/images/background/34.jpg)">
+    <div class="auto-container">
+        <h1>View Bakers</h1>
+        <ul class="page-breadcrumb">
+            <li><a href="/">home</a></li>
+            <li>View Bakers</li>
+        </ul>
+    </div>
+</section>
+<!--End Page Title-->
+
+<!--Sidebar Page Container-->
+<section class="blog-section blog-masonry">
+    <div class="auto-container">
+        <div class="row masonry-items-container">
+            <!-- Baker Block -->
+            {% for i in baker %}
+            <div class="news-block masonry-item col-lg-4 col-md-6 col-sm-12" style="margin-bottom: 15px;">
+                <div class="inner-box" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 10px; background-color: #fff; overflow: hidden;">
+                    <div class="image-column" style="text-align: center; background-color: #f9f9f9; padding: 15px;">
+                        <img src="/static/media/{{i.ProfilePicture1}}" alt="Profile Picture" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover;">
+                    </div>
+                    <div class="content-column" style="padding: 15px;">
+                        <h4 style="text-align: center; font-size: 18px; color: #333; font-weight: bold; margin-bottom: 10px;">
+                            <a href="/" style="text-decoration: none; color: inherit;">{{ i.Username1 }}</a>
+                        </h4>
+                        <div class="rating" style="text-align: center; margin-bottom: 10px;">
+                            <span class="fa fa-star" style="color: #FFD700;"></span>
+                            <span class="fa fa-star" style="color: #FFD700;"></span>
+                            <span class="fa fa-star" style="color: #FFD700;"></span>
+                            <span class="fa fa-star" style="color: #FFD700;"></span>
+                            <span class="fa fa-star-half-alt" style="color: #FFD700;"></span>
+                        </div>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #555;">
+                            <li style="margin-bottom: 5px;">
+                                <span class="fa fa-envelope" style="color: #007BFF; margin-right: 5px;"></span> {{ i.Email1 }}
+                            </li>
+                            <li style="margin-bottom: 5px;">
+                                <span class="fa fa-phone" style="color: #28a745; margin-right: 5px;"></span> +91 {{ i.Phonenumber1 }}
+                            </li>
+                            <li style="margin-bottom: 5px;">
+                                <span class="fa fa-briefcase" style="color: #17a2b8; margin-right: 5px;"></span>Experience: {{ i.Experience }} years
+                            </li>
+                            <li style="margin-bottom: 5px;">
+                                <span class="fa fa-map-marker-alt" style="color: #dc3545; margin-right: 5px;"></span> {{ i.Address1 }}
+                            </li>
+                            <li>
+                                <span class="fa fa-file-alt" style="color: #ffc107; margin-right: 5px;"></span>
+                                <a href="/static/media/{{ i.Certificate }}" target="_blank" style="color: #007BFF; text-decoration: none;">Certificate</a>
+                            </li>
+                        </ul>
+                        
+                        <div style="text-align: center; margin-top: 10px;">
+                            <a href="/userViewCakes?id={{i.id}}" class="btn btn-primary" style="padding: 5px 15px; font-size: 14px; border-radius: 5px;">View Cakes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!--End Sidebar Page Container-->
+{% endblock %}

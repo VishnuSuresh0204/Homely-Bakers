@@ -1,0 +1,98 @@
+{% extends 'ADMIN/adminCommon.html' %}
+{% load static %}
+{% for m in messages %}
+<script>
+    alert("{{m}}")
+</script>
+{% endfor %}
+{% block content %}
+
+    <!--Page Title-->
+    <section class="page-title" style="background-image:url(/static/images/background/34.jpg)">
+        <div class="auto-container">
+            <h1>View Bakers</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/">home</a></li>
+                <li>View Bakers</li>
+            </ul>
+        </div>
+    </section>
+    <!--End Page Title-->
+
+    <!--Login Section-->
+    <section class="login-section">
+        <div class="auto-container">
+            <!-- Login Table -->
+            <div class="login-table">
+                <h3 style="margin-left: 500px;">View Bakers</h3>
+                <!--Login Table-->
+                <table style="width: 100%; border: 1px solid #ddd; border-collapse: collapse;">
+                    <thead style="background-color: #f4f4f4;">
+                        <tr>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Bakername</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Image</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Email</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Phonenumber</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Experience</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Certificate</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Address</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;" colspan="2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data %}
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Username1}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><img src="/static/media/{{i.ProfilePicture1}}" alt="image" width="100" style="border-radius: 5px;"></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Email1}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Phonenumber1}}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Experience}}years</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><a style="color: brown;font-weight: bold;" href="/static/media/{{i.Certificate}}" target="_blank">View Certificate</a></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Address1}}</td>
+
+                            {% if i.logid.is_active == 0 %}
+                            <td><a href="\ApproveBaker?id={{i.logid.id}}&status=1" class="btn btn-success">Approve</a>
+                                <a href="\ApproveBaker?id={{i.logid.id}}&status=0" class="btn btn-danger">Reject</a>
+                            </td>
+                            {% else %}
+                            <td><a href="/DeleteBaker?id={{i.id}}" class="btn btn-danger">Delete</a></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!--End Login Table -->  
+        </div>
+    </section>
+    <!--End Login Section-->
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            margin-top: 20px;
+        }
+        th {
+            background-color: #eac7dd;
+            color: #333;
+            font-weight: bold;
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+
+{% endblock %}

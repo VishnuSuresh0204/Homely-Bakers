@@ -1,0 +1,87 @@
+{% extends 'common.html' %}
+{% load static %}
+{% for m in messages %}
+<script>
+    alert("{{m}}")
+</script>
+{% endfor %}
+{% block content %}
+
+    <!--Page Title-->
+    <section class="page-title" style="background-image:url(/static/images/background/34.jpg)">
+        <div class="auto-container">
+            <h1>Baker Register</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/">home</a></li>
+                <li>Baker Register</li>
+            </ul>
+        </div>
+    </section>
+    <!--End Page Title-->
+
+    <!--Registration Section-->
+    <section class="login-section">
+        <div class="auto-container">
+            <!-- Login Form -->
+            <div class="login-form" style="margin-left: 280px;">
+                <h2>Baker Register</h2>
+                <!--Login Form-->
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Username *</label>
+                        <input type="text" name="username" placeholder="" required style="width: 600px;border: 1px solid #bfbbbb;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" name="email" placeholder="" required style="width: 600px;border: 1px solid #bfbbbb;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone *</label>
+                        <input type="text" name="phone" placeholder="" required style="width: 600px;border: 1px solid #bfbbbb;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Profile Picture *</label>
+                        <div style="border: 1px solid #bfbbbb; padding: 5px;width: 600px;">
+                            <input type="file" name="profile_picture" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password *</label>
+                        <input type="password" name="password" placeholder="" required style="width: 600px;border: 1px solid #bfbbbb;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Experience *</label>
+                        <input type="text" name="experience" placeholder="" required style="width: 600px;border: 1px solid #bfbbbb;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Certificate *</label>
+                        <div style="border: 1px solid #bfbbbb; padding: 5px;width: 600px;">
+                            <input type="file" name="certi" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Address *</label>
+                        <div style="border: 1px solid #bfbbbb; padding: 6px;width: 600px;">
+                            <textarea name="address" placeholder="" required style="width: 200px; height: 50px;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input class="theme-btn" type="submit" name="submit-form" value="Register">
+                    </div>
+                </form>
+            </div>
+            <!--End Login Form -->  
+        </div>
+    </section>
+    <!--End Registration Section-->
+
+{% endblock %}
