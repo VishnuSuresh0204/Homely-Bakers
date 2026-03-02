@@ -119,23 +119,4 @@
 </style>
 
 {% endblock %}
-    </form>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('form').submit(function(event) {
-                const selectedRating = $('input[name="rating"]:checked');
-                if (!selectedRating.length) {
-                    event.preventDefault();
-                    alert("Please Select rating");
-                } else {
-                    const ratingValue = selectedRating.val();
-                    console.log("Selected Rating:", ratingValue);
-                }
-            });
-        });
-    </script>
-</body>
-</html>
 
