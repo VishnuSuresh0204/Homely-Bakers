@@ -1,162 +1,304 @@
-{% extends 'BAKER/bakerCommon.html' %}
-{% load static %}
-{% for m in messages %}
+{% extends 'BAKER/bakerCommon.html' %} {% load static %} {% for m in messages %}
 <script>
-    alert("{{m}}")
+  alert("{{m}}");
 </script>
-{% endfor %}
-{% block content %}
+{% endfor %} {% block content %}
 
-    <!--Page Title-->
-    <section class="page-title" style="background-image:url(/static/images/background/34.jpg)">
-        <div class="auto-container">
-            <h1>Add Cake Details</h1>
-            <ul class="page-breadcrumb">
-                <li><a href="/">home</a></li>
-                <li>Add Cake</li>
-            </ul>
+<!--Page Title-->
+<section
+  class="page-title"
+  style="background-image: url(/static/images/background/34.jpg)"
+>
+  <div class="auto-container">
+    <h1>Add Cake Details</h1>
+    <ul class="page-breadcrumb">
+      <li><a href="/">home</a></li>
+      <li>Add Cake</li>
+    </ul>
+  </div>
+</section>
+<!--End Page Title-->
+
+<!--Add Cake Section-->
+<section class="cake-section">
+  <div class="auto-container">
+    <!-- Cake Form -->
+    <div class="cake-form" style="margin-top: 50px">
+      <h2 style="margin-left: 430px">Add Cake Details</h2>
+      <!--Cake Form-->
+      <form
+        method="post"
+        enctype="multipart/form-data"
+        style="margin-top: 20px; margin-left: 280px"
+      >
+        {% csrf_token %}
+        <div class="form-group">
+          <label>Cake Name *</label>
+          <input
+            type="text"
+            name="CakeName"
+            placeholder="Enter Cake Name"
+            required
+            class="form-control"
+            style="width: 600px; border: 1px solid #bfbbbb"
+          />
         </div>
-    </section>
-    <!--End Page Title-->
 
-    <!--Add Cake Section-->
-    <section class="cake-section">
-        <div class="auto-container">
-            <!-- Cake Form -->
-            <div class="cake-form" style="margin-top: 50px;">
-                <h2 style="margin-left:430px;">Add Cake Details</h2>
-                <!--Cake Form-->
-                <form method="post" enctype="multipart/form-data" style="margin-top: 20px;margin-left: 280px;">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label>Cake Name *</label>
-                        <input type="text" name="CakeName" placeholder="Enter Cake Name" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Cake Description *</label>
-                        <textarea name="CakeDescri" placeholder="Enter Cake Description" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Cake Image *</label>
-                        <input type="file" name="CakeImage" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Cake Category *</label>
-                        <select name="CakeCategory" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
-                            <option value="" selected disabled>--Select Category--</option>
-                            <option value="Birthday">Birthday</option>
-                            <option value="Wedding">Wedding</option>
-                            <option value="Anniversary">Anniversary</option>
-                            <option value="Custom">Custom</option>
-                            <option value="Special">Special</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Cake Price *</label>
-                        <input type="number" name="CakePrice" placeholder="Enter Price" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Cake Weight *</label>
-                        <div style="padding: 10px; margin-top: 10px; border: 1px solid #bfbbbb; width: 600px;">
-                            <label>
-                                <input type="checkbox" name="CakeWeight[]" value="250g"> 250g
-                            </label><br>
-                            <label>
-                                <input type="checkbox" name="CakeWeight[]" value="500g"> 500g
-                            </label><br>
-                            <label>
-                                <input type="checkbox" name="CakeWeight[]" value="1kg"> 1kg
-                            </label><br>
-                            <label>
-                                <input type="checkbox" name="CakeWeight[]" value="1.5kg"> 1.5kg
-                            </label><br>
-                            <label>
-                                <input type="checkbox" name="CakeWeight[]" value="2kg"> 2kg
-                            </label><br>
-                            <label>
-                                <input type="checkbox" name="CakeWeight[]" value="Custom" id="customWeightCheckbox"> Custom
-                            </label><br>
-                            <input type="text" id="customWeightInput" name="CustomCakeWeight" placeholder="Enter custom weight" class="form-control" style="margin-top: 5px; display: none;">
-                        </div>
-                    </div>                    
-
-                    <div class="form-group">
-                        <label>Cake Flavor *</label>
-                        <input type="text" name="CakeFlavor" placeholder="Enter Flavor" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Cake Ingredients *</label>
-                        <textarea name="CakeIngredients" placeholder="Enter Ingredients" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;"></textarea>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label>Customizable Options *</label>
-                        <div>
-                            <label style="margin-right: 15px;">
-                                <input type="radio" name="CustomizableOptionsToggle" value="Yes" onclick="toggleOptions(true)"> Yes
-                            </label>
-                            <label>
-                                <input type="radio" name="CustomizableOptionsToggle" value="No" onclick="toggleOptions(false)" checked> No
-                            </label>
-                        </div>
-                    
-                        <div id="checkboxOptions" style="padding: 10px; margin-top: 10px; display: none;">
-                            <label style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <input type="checkbox" name="CustomizableOptions[]" value="Personalized Message" style="width: 20px; height: 20px; margin-right: 10px;"> 
-                                Add a personalized message
-                            </label>
-                            <label style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <input type="checkbox" name="CustomizableOptions[]" value="Change Flavor" style="width: 20px; height: 20px; margin-right: 10px;"> 
-                                Change flavor
-                            </label>
-                            <label style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <input type="checkbox" name="CustomizableOptions[]" value="Add Toppings" style="width: 20px; height: 20px; margin-right: 10px;"> 
-                                Add toppings
-                            </label>
-                            <label style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <input type="checkbox" name="CustomizableOptions[]" value="Custom Shape" style="width: 20px; height: 20px; margin-right: 10px;"> 
-                                Custom shape (e.g., heart, round)
-                            </label>
-                            <label style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <input type="checkbox" name="CustomizableOptions[]" value="Extra Layers" style="width: 20px; height: 20px; margin-right: 10px;"> 
-                                Add extra layers
-                            </label>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label>Stock Quantity *</label>
-                        <input type="number" name="StockQuantity" placeholder="Enter Stock Quantity" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Earliest Delivery</label>
-                        <input type="text" name="EarliestDelivery" placeholder="Enter Earliest Delivery" class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
-                    </div>
-                    
-                    <div class="form-group">
-                        <input class="theme-btn btn btn-info" type="submit" name="submit-form" value="Add Cake" style="padding: 10px 20px;border-radius: 20px; font-size: 16px;">
-                    </div><br>
-                </form>
-            </div>
-            <!--End Cake Form -->  
+        <div class="form-group">
+          <label>Cake Description *</label>
+          <textarea
+            name="CakeDescri"
+            placeholder="Enter Cake Description"
+            required
+            class="form-control"
+            style="width: 600px; border: 1px solid #bfbbbb"
+          ></textarea>
         </div>
-    </section>
-    <!--End Cake Section-->
-    <script>
-        function toggleOptions(show) {
-            const checkboxOptions = document.getElementById('checkboxOptions');
-            checkboxOptions.style.display = show ? 'block' : 'none';
-        }
-        toggleOptions(false); // Ensure options are hidden by default
-    </script>
+
+        <div class="form-group">
+          <label>Cake Image *</label>
+          <input
+            type="file"
+            name="CakeImage"
+            required
+            class="form-control"
+            style="width: 600px; border: 1px solid #bfbbbb"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Cake Category *</label>
+          <select
+            name="CakeCategory"
+            required
+            class="form-control"
+            style="width: 600px; border: 1px solid #bfbbbb"
+          >
+            <option value="" selected disabled>--Select Category--</option>
+            <option value="Birthday">Birthday</option>
+            <option value="Wedding">Wedding</option>
+            <option value="Anniversary">Anniversary</option>
+            <option value="Custom">Custom</option>
+            <option value="Special">Special</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Cake Price *</label>
+          <input
+            type="number"
+            name="CakePrice"
+            placeholder="Enter Price"
+            required
+            class="form-control"
+            style="width: 600px; border: 1px solid #bfbbbb"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Cake Weight *</label>
+          <div
+            style="
+              padding: 10px;
+              margin-top: 10px;
+              border: 1px solid #bfbbbb;
+              width: 600px;
+            "
+          >
+            <label>
+              <input type="checkbox" name="CakeWeight[]" value="250g" />
+              250g </label
+            ><br />
+            <label>
+              <input type="checkbox" name="CakeWeight[]" value="500g" />
+              500g </label
+            ><br />
+            <label>
+              <input type="checkbox" name="CakeWeight[]" value="1kg" checked />
+              1kg </label
+            ><br />
+            <label>
+              <input type="checkbox" name="CakeWeight[]" value="1.5kg" />
+              1.5kg </label
+            ><br />
+            <label>
+              <input type="checkbox" name="CakeWeight[]" value="2kg" />
+              2kg </label
+            ><br />
+            <label>
+              <input
+                type="checkbox"
+                name="CakeWeight[]"
+                value="Custom"
+                id="customWeightCheckbox"
+              />
+              Custom </label
+            ><br />
+            <input
+              type="text"
+              id="customWeightInput"
+              name="CustomCakeWeight"
+              placeholder="Enter custom weight"
+              class="form-control"
+              style="margin-top: 5px; display: none"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Cake Flavor *</label>
+          <input
+            type="text"
+            name="CakeFlavor"
+            placeholder="Enter Flavor"
+            required
+            class="form-control"
+            style="width: 600px; border: 1px solid #bfbbbb"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Cake Ingredients *</label>
+          <textarea
+            name="CakeIngredients"
+            placeholder="Enter Ingredients"
+            required
+            class="form-control"
+            style="width: 600px; border: 1px solid #bfbbbb"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Customizable Options *</label>
+          <div>
+            <label style="margin-right: 15px">
+              <input
+                type="radio"
+                name="CustomizableOptionsToggle"
+                value="Yes"
+                onclick="toggleOptions(true)"
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="CustomizableOptionsToggle"
+                value="No"
+                onclick="toggleOptions(false)"
+                checked
+              />
+              No
+            </label>
+          </div>
+
+          <div
+            id="checkboxOptions"
+            style="padding: 10px; margin-top: 10px; display: none"
+          >
+            <label
+              style="display: flex; align-items: center; margin-bottom: 10px"
+            >
+              <input
+                type="checkbox"
+                name="CustomizableOptions[]"
+                value="Personalized Message"
+                style="width: 20px; height: 20px; margin-right: 10px"
+              />
+              Add a personalized message
+            </label>
+            <label
+              style="display: flex; align-items: center; margin-bottom: 10px"
+            >
+              <input
+                type="checkbox"
+                name="CustomizableOptions[]"
+                value="Change Flavor"
+                style="width: 20px; height: 20px; margin-right: 10px"
+              />
+              Change flavor
+            </label>
+            <label
+              style="display: flex; align-items: center; margin-bottom: 10px"
+            >
+              <input
+                type="checkbox"
+                name="CustomizableOptions[]"
+                value="Add Toppings"
+                style="width: 20px; height: 20px; margin-right: 10px"
+              />
+              Add toppings
+            </label>
+            <label
+              style="display: flex; align-items: center; margin-bottom: 10px"
+            >
+              <input
+                type="checkbox"
+                name="CustomizableOptions[]"
+                value="Custom Shape"
+                style="width: 20px; height: 20px; margin-right: 10px"
+              />
+              Custom shape (e.g., heart, round)
+            </label>
+            <label
+              style="display: flex; align-items: center; margin-bottom: 10px"
+            >
+              <input
+                type="checkbox"
+                name="CustomizableOptions[]"
+                value="Extra Layers"
+                style="width: 20px; height: 20px; margin-right: 10px"
+              />
+              Add extra layers
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Stock Quantity *</label>
+          <input
+            type="number"
+            name="StockQuantity"
+            placeholder="Enter Stock Quantity"
+            required
+            class="form-control"
+            style="width: 600px; border: 1px solid #bfbbbb"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Earliest Delivery</label>
+          <input
+            type="text"
+            name="EarliestDelivery"
+            placeholder="Enter Earliest Delivery"
+            class="form-control"
+            style="width: 600px; border: 1px solid #bfbbbb"
+          />
+        </div>
+
+        <div class="form-group">
+          <input
+            class="theme-btn btn btn-info"
+            type="submit"
+            name="submit-form"
+            value="Add Cake"
+            style="padding: 10px 20px; border-radius: 20px; font-size: 16px"
+          />
+        </div>
+        <br />
+      </form>
+    </div>
+    <!--End Cake Form -->
+  </div>
+</section>
+<!--End Cake Section-->
+<script>
+  function toggleOptions(show) {
+    const checkboxOptions = document.getElementById("checkboxOptions");
+    checkboxOptions.style.display = show ? "block" : "none";
+  }
+  toggleOptions(false); // Ensure options are hidden by default
+</script>
 
 {% endblock %}

@@ -80,8 +80,13 @@
 
                 <div class="form-group">
                     <label>Cake Weight *</label>
-                    <input type="text" name="CakeWeight" value="{{ cake.CakeWeight }}" required
-                        class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
+                    <div style="padding: 10px; margin-top: 10px; border: 1px solid #bfbbbb; width: 600px;">
+                        <label><input type="checkbox" name="CakeWeight[]" value="250g" {% if '250g' in cake.CakeWeight %}checked{% endif %}> 250g</label><br>
+                        <label><input type="checkbox" name="CakeWeight[]" value="500g" {% if '500g' in cake.CakeWeight %}checked{% endif %}> 500g</label><br>
+                        <label><input type="checkbox" name="CakeWeight[]" value="1kg" {% if '1kg' in cake.CakeWeight %}checked{% endif %}> 1kg</label><br>
+                        <label><input type="checkbox" name="CakeWeight[]" value="1.5kg" {% if '1.5kg' in cake.CakeWeight %}checked{% endif %}> 1.5kg</label><br>
+                        <label><input type="checkbox" name="CakeWeight[]" value="2kg" {% if '2kg' in cake.CakeWeight %}checked{% endif %}> 2kg</label><br>
+                    </div>
                 </div>
 
                 <div class="form-group">
