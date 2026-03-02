@@ -7,86 +7,197 @@
 {% endfor %}
 {% block content %}
 
-    <!--Page Title-->
-    <section class="page-title" style="background-image:url(/static/images/background/34.jpg)">
-        <div class="auto-container">
-            <h1>View Feedback</h1>
-            <ul class="page-breadcrumb">
-                <li><a href="/">home</a></li>
-                <li>View Feedback</li>
-            </ul>
-        </div>
-    </section>
-    <!--End Page Title-->
+<!--Page Title-->
+<section class="page-title" style="background-image:url(/static/images/background/34.jpg)">
+    <div class="auto-container">
+        <h1>My Feedback</h1>
+        <ul class="page-breadcrumb">
+            <li><a href="/">home</a></li>
+            <li>My Feedback</li>
+        </ul>
+    </div>
+</section>
+<!--End Page Title-->
 
-    <!--Cake Section-->
-    <section class="cake-section">
-        <div class="auto-container">
-            <!-- Cake Table -->
-            <div class="cake-table"><br><br>
-                <h3 style="margin-left: 430px;">View Feedback</h3>
-                <!--Cake Table-->
-                <table style="width: 100%; border: 1px solid #ddd; border-collapse: collapse;margin-left: -80px;">
-                    <thead style="background-color: #f4f4f4;">
-                        <tr>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Cake Name</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Image</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Message</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Weight</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Customizations</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Rating</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for i in data %}
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.cakeid.CakeName}}</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <a href="/static/media/{{i.CakeImage}}" target="_blank">
-                                    <img src="/static/media/{{i.cakeid.CakeImage}}" alt="image" width="200px" style="border-radius: 5px; cursor: zoom-in;">
-                                </a>
-                            </td>                            
-                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Message}}</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.bookingid.weight}}</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.bookingid.customization}}</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">{{i.Rating}}⭐</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <br><br><br><br>
+<!--Feedback Section-->
+<section class="feedback-section">
+    <div class="auto-container">
+        <div class="sec-title text-center">
+            <div class="divider"><img src="{% static 'images/icons/divider-1.png' %}" alt=""></div>
+            <h2>Your Reviews</h2>
+            <div class="text">Thank you for sharing your experience with our bakers!</div>
+        </div>
+
+        <div class="row">
+            {% for i in data %}
+            <div class="col-lg-4 col-md-6 col-sm-12 feedback-block">
+                <div class="feedback-card h-100">
+                    <div class="card-inner">
+                        <div class="cake-info d-flex align-items-center mb-3">
+                            <div class="cake-thumb">
+                                <img src="/static/media/{{i.cakeid.CakeImage}}" alt="{{i.cakeid.CakeName}}">
+                            </div>
+                            <div class="cake-details ml-3">
+                                <h4 class="cake-name">{{i.cakeid.CakeName}}</h4>
+                                <span class="cake-meta">{{i.bookingid.weight}} | {{i.bookingid.customization}}</span>
+                            </div>
+                        </div>
+
+                        <div class="feedback-content">
+                            <div class="rating mb-2">
+                                {% for _ in "12345" %}
+                                {% if forloop.counter <= i.Rating|add:"0" %} <span class="fa fa-star checked"></span>
+                                    {% else %}
+                                    <span class="fa fa-star-o"></span>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <span class="rating-num">({{i.Rating}}/5)</span>
+                            </div>
+                            <p class="message">"{{i.Message}}"</p>
+                        </div>
+
+                        <div class="feedback-footer mt-4 d-flex justify-content-between align-items-center">
+                            <div class="date-info">
+                                <span class="post-date text-muted" style="font-size: 0.8rem;">Reviewed on
+                                    {{i.date|date:"F j, Y"}}</span>
+                            </div>
+                            <div class="status-badge">
+                                <span
+                                    class="badge badge-pill {% if i.fstatus == 'Accepted' %}badge-success{% else %}badge-warning{% endif %}"
+                                    style="font-size: 0.7rem; padding: 5px 10px; border-radius: 20px; background-color: #e79b9b40; color: #e79b9b;">
+                                    {{i.fstatus|capfirst}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!--End Cake Table -->  
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="no-feedback">
+                    <i class="fa fa-commenting-o mb-3" style="font-size: 3rem; color: #ccc;"></i>
+                    <p>You haven't shared any feedback yet.</p>
+                    <a href="/viewbooking" class="theme-btn btn-style-one mt-3">View Recent Bookings</a>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-    </section>
-    <!--End Cake Section-->
+    </div>
+</section>
 
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: Arial, sans-serif;
-            margin-top: 20px;
-        }
-        th {
-            background-color: #e79b9b;
-            color: #333;
-            font-weight: bold;
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-        td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-    </style>
+<style>
+    .feedback-section {
+        padding: 80px 0;
+        background-color: #fdf8f8;
+    }
+
+    .feedback-card {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #eee;
+    }
+
+    .feedback-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(231, 155, 155, 0.15);
+        border-color: #e79b9b;
+    }
+
+    .card-inner {
+        padding: 25px;
+    }
+
+    .cake-thumb {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .cake-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .cake-name {
+        font-size: 1.1rem;
+        margin: 0;
+        color: #333;
+        font-weight: 700;
+    }
+
+    .cake-meta {
+        font-size: 0.8rem;
+        color: #888;
+    }
+
+    .rating .fa-star {
+        color: #f39c12;
+    }
+
+    .rating .fa-star-o {
+        color: #ccc;
+    }
+
+    .rating-num {
+        font-size: 0.8rem;
+        color: #888;
+        margin-left: 5px;
+    }
+
+    .message {
+        font-style: italic;
+        color: #555;
+        line-height: 1.6;
+        margin-top: 10px;
+    }
+
+    .ml-3 {
+        margin-left: 1rem;
+    }
+
+    .mb-2 {
+        margin-bottom: 0.5rem;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .justify-content-between {
+        justify-content: space-between;
+    }
+
+    .align-items-center {
+        align-items: center;
+    }
+
+    .h-100 {
+        height: 100%;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mt-3 {
+        margin-top: 1rem;
+    }
+</style>
 
 {% endblock %}
