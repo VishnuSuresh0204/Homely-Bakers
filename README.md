@@ -1,83 +1,99 @@
-# HomelyCakes - Online Cake Booking System
+# 🎂 HomelyCakes - Online Cake Booking System
 
-HomelyCakes is a Django-based web application that connects local bakers with customers. Customers can browse a variety of cakes, customize their orders based on weight and special instructions, and provide feedback after delivery.
+[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-4.2+-092E20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-## Features
+**HomelyCakes** is a premium Django-powered platform designed to bridge the gap between talented local bakers and cake enthusiasts. It offers a seamless, interactive experience for ordering customized cakes with real-time pricing and verified feedback.
 
-### For Customers
+---
 
-- **Browse Cakes**: Explore a wide range of cakes with detailed descriptions and pricing.
-- **Cake Customization**:
-  - Select weight (500g, 1kg, 2kg, etc.) with automatic price scaling.
-  - Add customization options (Eggless, Less Sugar, Extra Toppings, etc.).
-- **Smart Pricing**: Real-time price updates based on weight and quantity before booking.
-- **Booking Management**: Track order status (Pending, Accepted, Paid).
-- **Secure Feedback**:
-  - Provide feedback only once per order.
-  - Submit feedback only after the scheduled delivery time has passed.
-  - Edit or Delete feedback at any time.
+## ✨ Premium Features
 
-### For Bakers
+### 👤 For Customers
 
-- **Product Management**: Add, update, and manage cake listings.
-- **Order Management**: Accept or Reject incoming bookings.
-- **Order Visibility**: View detailed customization requirements for every order.
-- **Feedback Review**: See what customers are saying about specific cake configurations.
+- **Visual Browsing**: Explore a curated collection of cakes with high-quality imagery.
+- **Dynamic Customization**:
+  - **Weight Selection**: Real-time price calculation for various weights (0.5kg to 5kg+).
+  - **Special Add-ons**: Eggless options, low sugar, extra toppings, and more.
+- **Order Tracking**: Comprehensive dashboard to monitor status from "Pending" to "Delivered".
+- **Smart Feedback System**:
+  - **Time-Locked Reviews**: Feedback can only be submitted after the delivery time.
+  - **One-Per-Order**: Ensures authentic, unique reviews for every purchase.
+  - **Full Control**: Edit or delete your feedback at any time.
 
-### For Admin
+### 👩‍🍳 For Bakers
 
-- **Overall Monitoring**: Manage bakers and users.
-- **Feedback Oversight**: View all reviews across the platform.
+- **Bakery Management**: Full CRUD operations for cake listings with support for multiple attributes.
+- **Order Fulfillment**: Review detailed customization requests and manage delivery schedules.
+- **Business Insights**: Access customer feedback specific to cake configurations to improve offerings.
 
-## Technologies Used
+### 🛠️ For Admin
 
-- **Backend**: Django (Python)
-- **Frontend**: HTML5, CSS3, JavaScript (Real-time pricing)
-- **Database**: SQLite (Default Django)
-- **Version Control**: Git
+- **User Governance**: Approve/reject baker registrations and manage user access.
+- **Quality Control**: Oversee all feedback to ensure platform integrity.
 
-## Setup and Installation
+---
 
-1. **Clone the repository**:
+## 🚀 Tech Stack
+
+- **Backend**: Python / Django (Robust & Scalable)
+- **Frontend**: Vanilla CSS (Premium Bellaria Theme), JavaScript (Real-time calculations)
+- **Database**: SQLite (Development-ready)
+- **Architecture**: MVC (Model-View-Controller)
+
+---
+
+## 🛠️ Installation & Setup
+
+1. **Clone & Enter**:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/VishnuSuresh0204/Homely-Bakers.git
    cd HomelyCakes
    ```
 
-2. **Create and activate a virtual environment**:
+2. **Environment Setup**:
 
    ```bash
    python -m venv env
-   .\env\Scripts\activate
+   .\env\Scripts\activate  # Windows
+   source env/bin/activate # Linux/Mac
    ```
 
-3. **Install dependencies**:
-   _(Ensure you have a requirements.txt, or install Django manually)_
+3. **Dependencies**:
 
    ```bash
    pip install django
    ```
 
-4. **Apply Migrations**:
+4. **Database Initialization**:
 
    ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-5. **Run the development server**:
-
+5. **Launch**:
    ```bash
    python manage.py runserver
    ```
+   Visit: `http://127.0.0.1:8000/`
 
-6. **Access the application**:
-   Open `http://127.0.0.1:8000/` in your browser.
+---
 
-## Project Structure
+## 📂 Project Structure
 
-- `homelyproject/`: Main Django project directory.
-- `cakeapp/`: Core app containing models, views, and business logic.
-- `templates/`: HTML templates for Admin, Baker, and User modules.
-- `static/`: CSS, JS, and Images.
+```text
+HomelyCakes/
+│
+├── homelyproject/          # Root Project Config
+├── cakeapp/                # Core Business Logic (Models, Views, Controllers)
+├── templates/              # Beautifully crafted HTML layouts
+├── static/                 # CSS, JS, and Media assets
+└── README.md               # Project Documentation
+```
+
+---
+
+_Developed with ❤️ for Homely Bakers._
