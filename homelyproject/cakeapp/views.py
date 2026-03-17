@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from .models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate
+import re
 
 # Create your views here.
 def index(request):
@@ -153,6 +154,8 @@ def addCake(request):
         cake_category = request.POST['CakeCategory']
         cake_price = request.POST['CakePrice']
         cake_weights = request.POST.getlist('CakeWeight[]')
+        if not cake_weights:
+            cake_weights = ['1kg']
         custom_weight = request.POST.get('CustomCakeWeight', '')
         if 'Custom' in cake_weights and custom_weight:
             cake_weights = [w for w in cake_weights if w != 'Custom']
@@ -187,6 +190,8 @@ def updateCake(request):
         cake_category = request.POST.get('CakeCategory')
         cake_price = request.POST.get('CakePrice')
         cake_weights = request.POST.getlist('CakeWeight[]')
+        if not cake_weights:
+            cake_weights = ['1kg']
         custom_weight = request.POST.get('CustomCakeWeight', '')
         if 'Custom' in cake_weights and custom_weight:
             cake_weights = [w for w in cake_weights if w != 'Custom']
@@ -268,16 +273,19 @@ def cakeDetail(request):
         amt=float(cid.CakePrice)
         
         # Extract numeric weight (e.g., "0.5" from "0.5 kg")
-        import re
-        weight_match = re.search(r"(\d+\.?\d*)", selected_weight)
-        weight_value = float(weight_match.group(1)) if weight_match else 1.0
-        
-        # Unit conversion: if grams, divide by 1000 to get kg equivalent
-        weight_unit = selected_weight.lower()
-        if 'kg' not in weight_unit and ('g' in weight_unit or 'gm' in weight_unit):
-            weight_value = weight_value / 1000.0
+        weight_value = 1.0
+        if selected_weight:
+            weight_match = re.search(r"(\d+\.?\d*)", selected_weight)
+            if weight_match:
+                weight_value = float(weight_match.group(1))
+                # Unit conversion: if grams, divide by 1000 to get kg equivalent
+                weight_unit = selected_weight.lower()
+                if 'kg' not in weight_unit and ('g' in weight_unit or 'gm' in weight_unit):
+                    weight_value = weight_value / 1000.0
+        else:
+            selected_weight = "1kg" # Fallback display value
             
-        total = amt * weight_value * int(qty)
+        total = amt * weight_value * int(qty or 1)
         
         log_id = request.session['uid']
         user = User.objects.get(logid=log_id)

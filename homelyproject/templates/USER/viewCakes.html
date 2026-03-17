@@ -38,6 +38,64 @@
                         </div>
                     </form>
                 </div>
+                <style>
+                    .our-shop .row {
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+                    .shop-item {
+                        margin-bottom: 30px;
+                        display: flex;
+                    }
+                    .shop-item .inner-box {
+                        display: flex;
+                        flex-direction: column;
+                        width: 100%;
+                        height: 100%;
+                        border: 1px solid #f1f1f1;
+                        border-radius: 15px;
+                        overflow: hidden;
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+                        transition: transform 0.3s ease;
+                    }
+                    .shop-item .inner-box:hover {
+                        transform: translateY(-5px);
+                    }
+                    .shop-item .image-box {
+                        height: 250px;
+                        overflow: hidden;
+                        position: relative;
+                    }
+                    .shop-item .image-box img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                    .shop-item .lower-content {
+                        flex-grow: 1;
+                        padding: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        text-align: center;
+                    }
+                    .shop-item .name {
+                        margin-bottom: 10px;
+                        font-size: 18px;
+                        height: 2.4em; /* Max 2 lines height */
+                        overflow: hidden;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                    }
+                    .shop-item .price {
+                        font-weight: bold;
+                        color: #ff5e5e;
+                        font-size: 20px;
+                        margin-bottom: 15px;
+                    }
+                </style>
                 <div class="our-shop">
                     <div class="row clearfix">
                         {% for i in data %}
@@ -51,9 +109,6 @@
                                             <img src="/static/media/{{i.CakeImage}}" alt="Cake Image" style="border-radius: 10px;">
                                         </a>
                                     </figure>
-                                    <div class="btn-box">
-                                        <a href="/addToCart?id={{i.id}}">Add to cart</a>
-                                    </div>
                                 </div>
                                 <div class="lower-content">
                                     <h4 class="name"><a href="/cakeDetail?id={{i.id}}">{{i.CakeName}}</a></h4>
