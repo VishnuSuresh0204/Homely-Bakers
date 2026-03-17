@@ -64,7 +64,9 @@
 
                             <div class="form-group col-lg-12 col-md-12">
                                 <div class="field-label" style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">Your Message</div>
-                                <textarea name="msg" placeholder="Share your experience with this cake..." style="min-height: 150px; border-radius: 10px; border: 1px solid #ddd; padding: 15px;" required>{{ feedback.Message }}</textarea>
+                                <textarea name="msg" placeholder="Share your experience with this cake..." 
+                                          minlength="5" maxlength="500" 
+                                          style="min-height: 150px; border-radius: 10px; border: 1px solid #ddd; padding: 15px;" required>{{ feedback.Message }}</textarea>
                             </div>
 
                             <div class="form-group col-lg-12 col-md-12 mt-4">

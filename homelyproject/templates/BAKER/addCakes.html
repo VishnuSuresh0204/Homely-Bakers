@@ -26,21 +26,27 @@
             <div class="cake-form" style="margin-top: 50px;">
                 <h2 style="margin-left:430px;">Add Cake Details</h2>
                 <!--Cake Form-->
-                <form method="post" enctype="multipart/form-data" style="margin-top: 20px;margin-left: 280px;">
+                <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()" style="margin-top: 20px;margin-left: 280px;">
                     {% csrf_token %}
                     <div class="form-group">
                         <label>Cake Name *</label>
-                        <input type="text" name="CakeName" placeholder="Enter Cake Name" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
+                        <input type="text" name="CakeName" placeholder="Enter Cake Name" required 
+                               minlength="3" maxlength="100" class="form-control" 
+                               style="width: 600px;border: 1px solid #bfbbbb;">
                     </div>
 
                     <div class="form-group">
                         <label>Cake Description *</label>
-                        <textarea name="CakeDescri" placeholder="Enter Cake Description" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;"></textarea>
+                        <textarea name="CakeDescri" placeholder="Enter Cake Description" required 
+                                  minlength="10" maxlength="500" class="form-control" 
+                                  style="width: 600px;border: 1px solid #bfbbbb;"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Cake Image *</label>
-                        <input type="file" name="CakeImage" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
+                        <input type="file" name="CakeImage" required 
+                               accept="image/png, image/jpeg, image/jpg" class="form-control" 
+                               style="width: 600px;border: 1px solid #bfbbbb;">
                     </div>
 
                     <div class="form-group">
@@ -57,7 +63,8 @@
 
                     <div class="form-group">
                         <label>Cake Price *</label>
-                        <input type="number" name="CakePrice" placeholder="Enter Price" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
+                        <input type="number" name="CakePrice" placeholder="Enter Price" required 
+                               min="1" class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
                     </div>
 
                     <div class="form-group">
@@ -87,12 +94,16 @@
 
                     <div class="form-group">
                         <label>Cake Flavor *</label>
-                        <input type="text" name="CakeFlavor" placeholder="Enter Flavor" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
+                        <input type="text" name="CakeFlavor" placeholder="Enter Flavor" required 
+                               minlength="3" maxlength="50" class="form-control" 
+                               style="width: 600px;border: 1px solid #bfbbbb;">
                     </div>
 
                     <div class="form-group">
                         <label>Cake Ingredients *</label>
-                        <textarea name="CakeIngredients" placeholder="Enter Ingredients" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;"></textarea>
+                        <textarea name="CakeIngredients" placeholder="Enter Ingredients" required 
+                                  minlength="5" maxlength="500" class="form-control" 
+                                  style="width: 600px;border: 1px solid #bfbbbb;"></textarea>
                     </div>
 
 
@@ -134,7 +145,9 @@
 
                     <div class="form-group">
                         <label>Stock Quantity *</label>
-                        <input type="number" name="StockQuantity" placeholder="Enter Stock Quantity" required class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
+                        <input type="number" name="StockQuantity" placeholder="Enter Stock Quantity" 
+                               required min="0" class="form-control" 
+                               style="width: 600px;border: 1px solid #bfbbbb;">
                     </div>
 
                     <div class="form-group">
@@ -152,6 +165,37 @@
     </section>
     <!--End Cake Section-->
     <script>
+        function validateForm() {
+            // Validate image size and type
+            const imageInput = document.querySelector('input[name="CakeImage"]');
+            if (imageInput.files.length > 0) {
+                const file = imageInput.files[0];
+                const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Only PNG, JPG, or JPEG images are allowed.');
+                    return false;
+                }
+                if (file.size > 2 * 1024 * 1024) { // 2MB
+                    alert('Image size must be less than 2MB.');
+                    return false;
+                }
+            }
+
+            // Ensure at least one weight is selected
+            const weightCheckboxes = document.querySelectorAll('input[name="CakeWeight[]"]');
+            let weightSelected = false;
+            weightCheckboxes.forEach(cb => {
+                if (cb.checked) weightSelected = true;
+            });
+            
+            if (!weightSelected) {
+                alert('Please select at least one cake weight.');
+                return false;
+            }
+
+            return true;
+        }
+
         function toggleOptions(show) {
             const checkboxOptions = document.getElementById('checkboxOptions');
             checkboxOptions.style.display = show ? 'block' : 'none';

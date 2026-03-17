@@ -18,24 +18,24 @@
             <h2 style="margin-left:430px;">Update Cake Details</h2>
 
             {% for cake in edit %}
-            <form method="post" enctype="multipart/form-data" style="margin-top: 20px;margin-left: 280px;">
+            <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()" style="margin-top: 20px;margin-left: 280px;">
                 {% csrf_token %}
 
                 <div class="form-group">
                     <label>Cake Name *</label>
                     <input type="text" name="CakeName" value="{{ cake.CakeName }}" required
-                        class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
+                        minlength="3" maxlength="100" class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
                 </div>
 
                 <div class="form-group">
                     <label>Cake Description *</label>
-                    <textarea name="CakeDescri" required class="form-control"
+                    <textarea name="CakeDescri" required minlength="10" maxlength="500" class="form-control"
                         style="width: 600px;border: 1px solid #bfbbbb;">{{ cake.CakeDescri }}</textarea>
                 </div>
 
                 <div class="form-group">
                     <label>Cake Image</label>
-                    <input type="file" name="CakeImage" class="form-control"
+                    <input type="file" name="CakeImage" accept="image/png, image/jpeg, image/jpg" class="form-control"
                         style="width: 600px;border: 1px solid #bfbbbb;">
 
                     {% if cake.CakeImage %}
@@ -74,7 +74,7 @@
 
                 <div class="form-group">
                     <label>Cake Price *</label>
-                    <input type="number" name="CakePrice" value="{{ cake.CakePrice }}" required
+                    <input type="number" name="CakePrice" value="{{ cake.CakePrice }}" required min="1"
                         class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
                 </div>
 
@@ -87,12 +87,12 @@
                 <div class="form-group">
                     <label>Cake Flavor *</label>
                     <input type="text" name="CakeFlavor" value="{{ cake.CakeFlavor }}" required
-                        class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
+                        minlength="3" maxlength="50" class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
                 </div>
 
                 <div class="form-group">
                     <label>Cake Ingredients *</label>
-                    <textarea name="CakeIngredients" required class="form-control"
+                    <textarea name="CakeIngredients" required minlength="5" maxlength="500" class="form-control"
                         style="width: 600px;border: 1px solid #bfbbbb;">{{ cake.CakeIngredients }}</textarea>
                 </div>
 
@@ -151,7 +151,7 @@
                 <div class="form-group">
                     <label>Stock Quantity *</label>
                     <input type="number" name="StockQuantity" value="{{ cake.StockQuantity }}" required
-                        class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
+                        min="0" class="form-control" style="width: 600px;border: 1px solid #bfbbbb;">
                 </div>
 
                 <div class="form-group">
@@ -174,6 +174,24 @@
 </section>
 
 <script>
+    function validateForm() {
+        // Validate image size and type if a new file is selected
+        const imageInput = document.querySelector('input[name="CakeImage"]');
+        if (imageInput.files.length > 0) {
+            const file = imageInput.files[0];
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Only PNG, JPG, or JPEG images are allowed.');
+                return false;
+            }
+            if (file.size > 2 * 1024 * 1024) { // 2MB
+                alert('Image size must be less than 2MB.');
+                return false;
+            }
+        }
+        return true;
+    }
+
     function toggleOptions(show) {
         const checkboxOptions = document.getElementById('checkboxOptions');
         checkboxOptions.style.display = show ? 'block' : 'none';
