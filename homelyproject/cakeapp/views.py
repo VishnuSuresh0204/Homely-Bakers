@@ -265,6 +265,18 @@ def cakeDetail(request):
         desc=request.POST.get("desc")
         deltime=request.POST.get("deltime")
         cake_id=request.POST.get("id")
+
+        # Date validation: check if delivery time is in the past
+        from datetime import datetime
+        now = datetime.now()
+        try:
+            d_time = datetime.strptime(deltime, '%Y-%m-%dT%H:%M')
+            if d_time < now:
+                messages.error(request, "Delivery time cannot be in the past.")
+                return redirect(f'/cakeDetail/?id={cake_id}')
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid delivery time format.")
+            return redirect(f'/cakeDetail/?id={cake_id}')
         selected_weight = request.POST.get("selected_weight")
         selected_customizations = request.POST.getlist("selected_customizations[]")
         customization_str = ", ".join(selected_customizations) if selected_customizations else "None"
@@ -427,6 +439,3 @@ def deleteFeedback(request):
     Feedback.objects.filter(id=fid).delete()
     messages.success(request, 'Feedback deleted successfully')
     return redirect('/viewbooking')
-
-
-

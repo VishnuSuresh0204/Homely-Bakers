@@ -172,6 +172,11 @@
                                             <input type="datetime-local" id="deltime" name="deltime" class="form-control" required>
                                         </div>
                                     
+                                        <div class="form-group" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
+                                            <h4 id="total-price-display" style="color: #28a745; font-weight: bold; margin-bottom: 5px;">Total Price: ₹{{ i.CakePrice }}</h4>
+                                            <small class="text-muted">(Price includes quantity and selected weight)</small>
+                                        </div>
+                                    
                                         <button type="submit" class="btn btn-success">Book Now</button>
                                     </form>
                                                                     
@@ -181,6 +186,54 @@
                         <!-- End Basic Details -->
                     </div>
                     <!-- End Product Detail -->
+                    <script>
+                        const basePrice = parseFloat("{{ i.CakePrice }}");
+                        const qtyInput = document.getElementById('quantity');
+                        const priceDisplay = document.querySelector('.item-price');
+                        const totalPriceDisplay = document.getElementById('total-price-display');
+                        const weightRadios = document.querySelectorAll('input[name="selected_weight"]');
+                    
+                        function updatePrice() {
+                            let selectedWeight = 1.0;
+                            weightRadios.forEach(radio => {
+                                if (radio.checked) {
+                                    const weightStr = radio.value.toLowerCase();
+                                    const match = weightStr.match(/(\d+\.?\d*)/);
+                                    if (match) {
+                                        let weight = parseFloat(match[0]);
+                                        // If unit is grams, convert to kg for price calculation
+                                        if (!weightStr.includes('kg') && (weightStr.includes('g') || weightStr.includes('gm'))) {
+                                            weight = weight / 1000.0;
+                                        }
+                                        selectedWeight = weight;
+                                    }
+                                }
+                            });
+                    
+                            const quantity = parseInt(qtyInput.value) || 1;
+                            const totalPrice = basePrice * selectedWeight * quantity;
+                            const formattedPrice = '₹' + totalPrice.toFixed(2);
+                            
+                            priceDisplay.innerText = formattedPrice;
+                            if (totalPriceDisplay) {
+                                totalPriceDisplay.innerText = 'Total Price: ' + formattedPrice;
+                            }
+                        }
+                    
+                        qtyInput.addEventListener('input', updatePrice);
+                        qtyInput.addEventListener('change', updatePrice);
+                        weightRadios.forEach(radio => radio.addEventListener('change', updatePrice));
+                        
+                        // Initial call to set price correctly if a radio is pre-selected (though usually none are)
+                        updatePrice();
+
+                        // Date validation: prevent selecting a past date
+                        const deltimeInput = document.getElementById('deltime');
+                        const now = new Date();
+                        const offset = now.getTimezoneOffset() * 60000;
+                        const localISOTime = new Date(now - offset).toISOString().slice(0, 16);
+                        deltimeInput.min = localISOTime;
+                    </script>
                     {% endfor %}
                 </div>
             </div>
@@ -188,41 +241,5 @@
     </div>
 </div>
 <!-- End Sidebar Page Container -->
-
-
-<script>
-    const basePrice = parseFloat("{{ i.CakePrice }}");
-    const qtyInput = document.getElementById('quantity');
-    const priceDisplay = document.querySelector('.item-price');
-    const weightRadios = document.querySelectorAll('input[name="selected_weight"]');
-
-    function updatePrice() {
-        let selectedWeight = 1.0;
-        weightRadios.forEach(radio => {
-            if (radio.checked) {
-                const weightStr = radio.value.toLowerCase();
-                const match = weightStr.match(/(\d+\.?\d*)/);
-                if (match) {
-                    let weight = parseFloat(match[0]);
-                    // If unit is grams, convert to kg for price calculation
-                    if (!weightStr.includes('kg') && (weightStr.includes('g') || weightStr.includes('gm'))) {
-                        weight = weight / 1000.0;
-                    }
-                    selectedWeight = weight;
-                }
-            }
-        });
-
-        const quantity = parseInt(qtyInput.value) || 1;
-        const totalPrice = basePrice * selectedWeight * quantity;
-        priceDisplay.innerText = '₹' + totalPrice.toFixed(2);
-    }
-
-    qtyInput.addEventListener('input', updatePrice);
-    weightRadios.forEach(radio => radio.addEventListener('change', updatePrice));
-    
-    // Initial call to set price correctly if a radio is pre-selected (though usually none are)
-    updatePrice();
-</script>
 
 {% endblock %}
